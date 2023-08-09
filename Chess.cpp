@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -26,118 +27,109 @@ struct Piece
 
 struct Rook : public Piece
 {
-    Rook()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "|";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        Rook()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "|";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
 struct Knight : public Piece
 {
-
-public:
-
-    Knight()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "?";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        Knight()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "?";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
 struct Bishop : public Piece
 {
-
-public:
-
-    Bishop()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "i";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        Bishop()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "i";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
 struct King : public Piece
 {
-
-public:
-
-    King()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "+";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        King()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "+";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
 struct Queen : public Piece
 {
-
-public:
-
-    Queen()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "*";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        Queen()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "*";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
 struct Pawn : public Piece
 {
-
-public:
-
-    Pawn()
-    {
-        Alive = true;
-    }
-    string Draw()
-    {
-        return "P";
-    }
-    bool Move(int Cx, int Cy)
-    {
-        return false;
-    }
+    public:
+        Pawn()
+        {
+            Alive = true;
+        }
+        string Draw()
+        {
+            return "P";
+        }
+        bool Move(int Cx, int Cy)
+        {
+            return false;
+        }
 };
 
-class Chess
+struct Chess
 {
-    private:
+    public:
         Rook *rooks;
         Knight* knights;
         Bishop* bishops;
@@ -146,7 +138,6 @@ class Chess
         Pawn* pawns;
         Piece*** board;
 
-    public:
         Chess()
         {
             // Initializing the Board:
@@ -284,9 +275,118 @@ class Chess
         }
 };
 
+class Engine
+{
+    private:
+        Chess chess;
+        string P1, P2;
+        int x, y;
+        int turn;
+
+    public:
+        Engine()
+        {
+            turn = 0;
+        }
+        void GameLoop()
+        {
+            system("CLS");
+
+            cout << "Player One, please enter your name:\n";
+            getline(cin, P1);
+            cout << "Player Two, please enter your name:\n";
+            getline(cin, P2);
+
+            while(1)
+            {
+                system("CLS");
+
+                Draw();
+
+                Update();
+
+                turn++;
+            }            
+        }
+        void Update()
+        {
+            if (turn % 2 == 0)
+            {
+                cout << P1 << ", Please choose the co-ordinates of the piece you would like to move\n";
+                reEnter1:
+                cin >> x;
+                cin >> y;
+                x--;
+                y--;
+                if ((x > 7 || x < 0) || (y > 7 || y < 0))
+                {
+                    cout << "Please enter values within the chess board range!\n";
+                    system("PAUSE");
+                    goto reEnter1;
+                }
+                else if (chess.board[y][x]->Alive == false)
+                {
+                    cout << "No Piece exits on location\n";
+                    system("PAUSE");
+                    goto reEnter1;
+                }
+                else if (chess.board[y][x]->ID == 2)
+                {
+                    cout << "This Piece belongs to player 2!\n";
+                    system("PAUSE");
+                    goto reEnter1;
+                }
+                else
+                {
+                    if (chess.board[y][x]->Move(x, y) == false)
+                    {
+                        goto reEnter1;
+                    }
+                }
+            }
+            else
+            {
+                cout << P2 << ", Please choose the co-ordinates of the piece you would like to move\n";
+                reEnter2:
+                cin >> x;
+                cin >> y;
+                x--;
+                y--;
+                if ((x > 7 || x < 0) || (y > 7 || y < 0))
+                {
+                    cout << "Please enter values within the chess board range!\n";
+                    system("PAUSE");
+                    goto reEnter2;
+                }
+                else if (chess.board[y][x]->Alive == false)
+                {
+                    cout << "No Piece exits on location\n";
+                    system("PAUSE");
+                    goto reEnter2;
+                }
+                else if (chess.board[y][x]->ID == 1)
+                {
+                    cout << "This Piece belongs to player 1!\n";
+                    system("PAUSE");
+                    goto reEnter2;
+                }
+                else
+                {
+                    if (chess.board[y][x]->Move(x, y) == false)
+                    {
+                        goto reEnter2;
+                    }
+                }
+            }
+        }
+        void Draw()
+        {
+            chess.DrawBoard();
+        }
+};
+
 int main()
 {
-    Chess chess;
-    chess.DrawBoard();
-    system("PAUSE");
+    Engine engine;
+    engine.GameLoop();
 }
