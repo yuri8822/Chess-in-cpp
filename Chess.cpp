@@ -305,8 +305,25 @@ class Engine
 
                 Update();
 
+                if (CheckState() == 1)
+                {
+
+                }
+                else if (CheckState() == 2)
+                {
+
+                }
+                else if (CheckState() == 3)
+                {
+
+                }
+
                 turn++;
             }            
+        }
+        void Draw()
+        {
+            chess.DrawBoard();
         }
         void Update()
         {
@@ -379,9 +396,13 @@ class Engine
                 }
             }
         }
-        void Draw()
+        int CheckState()
         {
-            chess.DrawBoard();
+            // This function will check the state of the game, for both of the kings,
+            // it will check to see whether or not the game has entered into the following 3 states:
+            // - Check (will return 1)
+            // - StaleMate (will return 2)
+            // - CheckMate (will return 3)
         }
 };
 
