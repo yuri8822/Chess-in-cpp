@@ -75,7 +75,7 @@ struct Rook : public Piece
             // CONDITIONS:
             if (x == Cx)
             {
-                for (int i = Cy; i < y; i++)
+                for (int i = Cy + 1; i < y; i++)
                 {
                     if (B.board[i][x]->ID > 0)
                     {
@@ -86,7 +86,7 @@ struct Rook : public Piece
             }
             else if (y == Cy)
             {
-                for (int i = Cx; i < x; i++)
+                for (int i = Cx + 1; i < x; i++)
                 {
                     if (B.board[y][i]->ID > 0)
                     {
@@ -128,8 +128,8 @@ struct Rook : public Piece
                         }
                         else
                         {
-                            B.board[Cy][Cx] = B.board[y][x];
-                            B.board[y][x] = new Piece;
+                            B.board[y][x] = B.board[Cy][Cx];
+                            B.board[Cy][Cx] = new Piece;
                             return true;
                         }
                     }
@@ -143,8 +143,8 @@ struct Rook : public Piece
                         }
                         else
                         {
-                            B.board[Cy][Cx] = B.board[y][x];
-                            B.board[y][x] = new Piece;
+                            B.board[y][x] = B.board[Cy][Cx];
+                            B.board[Cy][Cx] = new Piece;
                             return true;
                         }
                     }
